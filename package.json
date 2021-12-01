@@ -1,0 +1,20 @@
+{
+  "name": "txda-webframe-helper",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "author": "Torx Software Ltd",
+  "license": "Copyright",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=browser --format=iife --global-name=txdaWebframeHelper --outfile=./dist/txda-webframe-helper.min.js",
+    "build:esm": "esbuild src/index.ts --bundle --minify --sourcemap --platform=browser --outdir=esm --format=esm",
+    "clean": "rm -rf ./dist/* && rm -rf ./esm/*",
+    "tsc": "tsc -noEmit",
+    "watch": "yarn build --watch",
+    "watch:esm": "yarn build:esm --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2"
+  }
+}

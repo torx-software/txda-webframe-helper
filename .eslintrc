@@ -1,0 +1,74 @@
+{
+  "root": true,
+  "extends": [
+    "standard",
+    "eslint:recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parserOptions": {
+    "parser": "@babel/eslint-parser",
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-var": [
+      "error"
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "standard",
+        "plugin:@typescript-eslint/recommended"
+      ]
+    },
+    {
+      "files": [
+        "*.vue"
+      ],
+      "extends": [
+        "standard",
+        "plugin:vue/recommended"
+      ],
+      "rules": {
+        "indent": "off",
+        "vue/no-v-html": "off",
+        "vue/script-indent": [
+          "error",
+          2,
+          {
+            "baseIndent": 1,
+            "switchCase": 1
+          }
+        ],
+        "vue/component-name-in-template-casing": [
+          "error",
+          "kebab-case",
+          {
+            "ignores": []
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.test.ts", "*.spec.ts", "*.test.js", "*.spec.js"],
+      "rules": {
+        "no-unused-expressions": "off",
+        "no-undef": "off"
+      }
+    }
+  ]
+}

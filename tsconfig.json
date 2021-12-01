@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "strict": true
+  }
+}
