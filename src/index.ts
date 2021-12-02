@@ -20,6 +20,11 @@ const initialize = (origin: string): Promise<MessagePort> =>
       messageType: 'txdaConnectionRequest',
       windowName: window.name,
     }, origin)
+
+    // If there's no response from TXDA, reject
+    setTimeout(() => {
+      reject('Connection to TXDA failed')
+    }, 10000)
   })
 
 export { initialize }
