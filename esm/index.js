@@ -1,0 +1,2 @@
+var o=t=>new Promise((i,s)=>{t.includes("*")&&s("Specific target origins must be specified to connect to TXDA installs"),window.addEventListener("message",e=>{if(t.includes(e.origin)||s("Attempted TXDA connection event from unauthorized origin"),e.data?.messageType==="txdaMessagePortTransfer"){let n=e.ports[0];i(n)}}),window.parent.postMessage({messageType:"txdaConnectionRequest",windowName:window.name},origin)}),a=o;export{a as default};
+//# sourceMappingURL=index.js.map
