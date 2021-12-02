@@ -1,2 +1,2 @@
-declare const initialize: (origins: string[]) => Promise<MessagePort>;
+declare const initialize: (origin: string) => Promise<MessagePort>;
 export { initialize };
