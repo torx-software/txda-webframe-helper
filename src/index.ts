@@ -1,4 +1,4 @@
-const txdaWebframeHelper = (origins: string[]): Promise<MessagePort> =>
+const initialize = (origins: string[]): Promise<MessagePort> =>
   new Promise((resolve, reject) => {
     if (origins.includes('*')) {
       reject('Specific target origins must be specified to connect to TXDA installs')
@@ -22,4 +22,4 @@ const txdaWebframeHelper = (origins: string[]): Promise<MessagePort> =>
     }, origin)
   })
 
-export default txdaWebframeHelper
+export { initialize }

@@ -1,2 +1,2 @@
-declare const txdaWebframeHelper: (origins: string[]) => Promise<MessagePort>;
-export default txdaWebframeHelper;
+declare const initialize: (origins: string[]) => Promise<MessagePort>;
+export { initialize };
