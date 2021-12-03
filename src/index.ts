@@ -5,6 +5,7 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
   new Promise((resolve, reject) => {
     if (origin === '*') {
       reject('Specific target origins must be specified to connect to TXDA installs')
+      return
     }
 
     // Listen for events from TXDA for initial setup of MessagePort
@@ -12,6 +13,7 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
       if (windowEvent.data?.messageType === 'txdaMessagePortTransfer') {
         if (windowEvent.origin !== origin) {
           reject('Attempted TXDA connection event from unauthorized origin')
+          return
         }
 
         const port = windowEvent.ports[0]
