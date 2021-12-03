@@ -10,13 +10,15 @@ interface Design {
 }
 
 type messageHandler = (event: MessageEvent) => void
-type connectionEstablishedHandler = () => void
+type connectedHandler = () => void
+type disconnectedHandler = () => void
 type updateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
 
 export interface TXDAMessageHandlers {
   _message?: messageHandler
-  connectionEstablished?: connectionEstablishedHandler
-  updateCurrentDesign?: updateCurrentDesignHandler
+  onConnected?: connectedHandler
+  onDisconnected?: disconnectedHandler
+  onUpdateCurrentDesign?: updateCurrentDesignHandler
 }
 
 export interface TXDAConnection {

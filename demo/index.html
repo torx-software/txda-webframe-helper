@@ -43,7 +43,7 @@
       messagesTextArea.scrollTop = messagesTextArea.scrollHeight
     }
 
-    const messageLog = message => log(message, 'Log')
+    const windowLog = message => log(message, 'Window')
     const portLog = message => log(message, 'TXDA MessagePort')
 
     const updateOrigin = async () => {
@@ -52,20 +52,23 @@
       }
 
       if (window.txdaConnection) {
-        console.warn('Existing connection, disconnecting it')
+        windowLog('Existing connection, disconnecting it')
         window.txdaConnection.disconnect()
       }
 
       const origin = document.getElementById('origin').value
 
       try {
-        messageLog('Initializing TXDA connection')
+        windowLog('Initializing TXDA connection')
 
         const handlers = {
-          connectionEstablished: () => {
+          onConnected: () => {
             portLog('TXDA connection established')
           },
-          updateCurrentDesign: (currentDesign, metaData) => {
+          onDisconnected: () => {
+            portLog('TXDA connection disconnected')
+          },
+          onUpdateCurrentDesign: (currentDesign, metaData) => {
             portLog('Current design updated')
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
@@ -77,18 +80,18 @@
         portLog(`Connection ${txdaConnection.id} connected`)
         window.txdaConnection = txdaConnection
       } catch (error) {
-        messageLog(`Failed to connect to origin ${origin}`)
+        windowLog(`Failed to connect to origin ${origin}`)
         console.error(error)
       }
 
     }
 
     window.addEventListener('DOMContentLoaded', (event) => {
-      messageLog('DOM loaded')
+      windowLog('DOM loaded')
       window.initRDKitModule()
         .then(async rdkit => {
           window.rdkit = rdkit
-          messageLog('RDKitJS loaded')
+          windowLog('RDKitJS loaded')
         })
       document.getElementById('connect').addEventListener('click', updateOrigin)
     })

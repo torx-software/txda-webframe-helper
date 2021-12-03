@@ -8,12 +8,14 @@ interface Design {
     smiles: string;
 }
 declare type messageHandler = (event: MessageEvent) => void;
-declare type connectionEstablishedHandler = () => void;
+declare type connectedHandler = () => void;
+declare type disconnectedHandler = () => void;
 declare type updateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void;
 export interface TXDAMessageHandlers {
     _message?: messageHandler;
-    connectionEstablished?: connectionEstablishedHandler;
-    updateCurrentDesign?: updateCurrentDesignHandler;
+    onConnected?: connectedHandler;
+    onDisconnected?: disconnectedHandler;
+    onUpdateCurrentDesign?: updateCurrentDesignHandler;
 }
 export interface TXDAConnection {
     id: string;

@@ -35,6 +35,7 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
           }),
           disconnect: () => {
             port.close()
+            handlers.onDisconnected?.()
           }
         }
 

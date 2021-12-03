@@ -7,22 +7,22 @@ export const attachHandlers = (port: MessagePort, handlers: TXDAMessageHandlers)
     })
   }
 
-  if (handlers.connectionEstablished) {
+  if (handlers.onConnected) {
     port.addEventListener('message', portEvent => {
       if (portEvent.data?.messageType === 'txdaConnectionAcknowledgement') {
-        handlers.connectionEstablished?.()
+        handlers.onConnected?.()
       }
     })
   }
 
-  if (handlers.updateCurrentDesign) {
+  if (handlers.onUpdateCurrentDesign) {
     port.addEventListener('message', portEvent => {
       if (portEvent.data?.messageType === 'txdaCurrentDesign') {
         const {
           metaData,
           data: currentDesign
         } = portEvent.data
-        handlers.updateCurrentDesign?.(currentDesign, metaData)
+        handlers.onUpdateCurrentDesign?.(currentDesign, metaData)
       }
     })
   }
