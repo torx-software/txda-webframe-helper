@@ -143,3 +143,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Custom
+demo/*.js*
