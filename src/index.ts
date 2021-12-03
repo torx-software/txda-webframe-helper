@@ -1,3 +1,4 @@
+import { attachHandlers } from "./handlers"
 import { PortWrapper, TXDAMessageHandlers } from "./types"
 
 const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise<PortWrapper> =>
@@ -15,36 +16,12 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
 
         const port = windowEvent.ports[0]
 
-        port.addEventListener('message', e => console.log(e))
-
         // Add any given event handlers to the port
-        if (handlers._message) {
-          port.addEventListener('message', portEvent => {
-            handlers._message?.(portEvent)
-          })
-        }
-
-        if (handlers.connectionEstablished) {
-          port.addEventListener('message', portEvent => {
-            if (portEvent.data?.messageType === 'txdaConnectionAcknowledgement') {
-              handlers.connectionEstablished?.()
-            }
-          })
-        }
-
-        if (handlers.updateCurrentDesign) {
-          port.addEventListener('message', portEvent => {
-            if (portEvent.data?.messageType === 'txdaCurrentDesign') {
-              const {
-                metaData,
-                data: currentDesign
-              } = portEvent.data
-              handlers.updateCurrentDesign?.(currentDesign, metaData)
-            }
-          })
-        }
+        attachHandlers(port, handlers)
 
         port.start()
+
+        // Fire an initial request for the current design as soon as the port starts
         port.postMessage({ messageType: 'txdaRequestCurrentDesign' })
 
         const portWrapper = {
