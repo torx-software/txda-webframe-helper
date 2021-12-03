@@ -1,7 +1,7 @@
 import { attachHandlers } from "./handlers"
-import { PortWrapper, TXDAMessageHandlers } from "./types"
+import { TXDAConnection, TXDAMessageHandlers } from "./types"
 
-const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise<PortWrapper> =>
+const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise<TXDAConnection> =>
   new Promise((resolve, reject) => {
     if (origin === '*') {
       reject('Specific target origins must be specified to connect to TXDA installs')
@@ -26,14 +26,15 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
         // Fire an initial request for the current design as soon as the port starts
         port.postMessage({ messageType: 'txdaRequestCurrentDesign' })
 
-        const portWrapper = {
+        const txdaConnection: TXDAConnection = {
           port,
           requestCurrentDesign: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign'
-          })
+          }),
+          disconnect: () => port.close()
         }
 
-        resolve(portWrapper)
+        resolve(txdaConnection)
       }
     })
 

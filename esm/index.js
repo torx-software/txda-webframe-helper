@@ -29,23 +29,26 @@ var attachHandlers = (port, handlers) => {
 var initialize = (origin, handlers = {}) => new Promise((resolve, reject) => {
   if (origin === "*") {
     reject("Specific target origins must be specified to connect to TXDA installs");
+    return;
   }
   window.addEventListener("message", (windowEvent) => {
     if (windowEvent.data?.messageType === "txdaMessagePortTransfer") {
       if (windowEvent.origin !== origin) {
         reject("Attempted TXDA connection event from unauthorized origin");
+        return;
       }
       const port = windowEvent.ports[0];
       attachHandlers(port, handlers);
       port.start();
       port.postMessage({ messageType: "txdaRequestCurrentDesign" });
-      const portWrapper = {
+      const txdaConnection = {
         port,
         requestCurrentDesign: () => port.postMessage({
           messageType: "txdaRequestCurrentDesign"
-        })
+        }),
+        disconnect: () => port.close()
       };
-      resolve(portWrapper);
+      resolve(txdaConnection);
     }
   });
   window.parent.postMessage({

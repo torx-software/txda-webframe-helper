@@ -15,8 +15,9 @@ export interface TXDAMessageHandlers {
     connectionEstablished?: connectionEstablishedHandler;
     updateCurrentDesign?: updateCurrentDesignHandler;
 }
-export interface PortWrapper {
+export interface TXDAConnection {
     port: MessagePort;
     requestCurrentDesign: () => void;
+    disconnect: () => void;
 }
 export {};
