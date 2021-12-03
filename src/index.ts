@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import { attachHandlers } from "./handlers"
 import { TXDAConnection, TXDAMessageHandlers } from "./types"
 
@@ -8,8 +10,7 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
       return
     }
 
-    // Listen for events from TXDA for initial setup of MessagePort
-    window.addEventListener('message', windowEvent => {
+    function handleWindowEvent (windowEvent: MessageEvent) {
       if (windowEvent.data?.messageType === 'txdaMessagePortTransfer') {
         if (windowEvent.origin !== origin) {
           reject('Attempted TXDA connection event from unauthorized origin')
@@ -27,16 +28,25 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
         port.postMessage({ messageType: 'txdaRequestCurrentDesign' })
 
         const txdaConnection: TXDAConnection = {
+          id: uuidv4(),
           port,
           requestCurrentDesign: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign'
           }),
-          disconnect: () => port.close()
+          disconnect: () => {
+            port.close()
+          }
         }
 
         resolve(txdaConnection)
+
+        // After establishing the port, unhook this function from receiving further requests
+        window.removeEventListener('message', handleWindowEvent)
       }
-    })
+    }
+
+    // Listen for events from TXDA for initial setup of MessagePort
+    window.addEventListener('message', handleWindowEvent)
 
     window.parent.postMessage({
       messageType: 'txdaConnectionRequest',

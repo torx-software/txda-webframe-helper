@@ -20,6 +20,7 @@ export interface TXDAMessageHandlers {
 }
 
 export interface TXDAConnection {
+  id: string,
   port: MessagePort;
   requestCurrentDesign: () => void
   disconnect: () => void
