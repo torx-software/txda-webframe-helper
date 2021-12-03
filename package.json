@@ -10,7 +10,8 @@
     "build:all": "yarn tsc:check && yarn build:iife && yarn build:esm",
     "build": "yarn build:all",
     "clean": "rm -rf ./dist/* && rm -rf ./esm/* && rm -rf ./demo/*.js*",
-    "demo": "yarn build:all && cp dist/txda-webframe-helper.min.js* ./demo && serve -C -p 3456 ./demo",
+    "demo:build": "yarn build:iife && cp dist/txda-webframe-helper.min.js* ./demo",
+    "demo:serve": "yarn demo:build && serve -C -p 3456 ./demo",
     "tsc:check": "tsc -noEmit",
     "watch": "yarn build --watch",
     "watch:esm": "yarn build:esm --watch"
