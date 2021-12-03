@@ -1,2 +1,62 @@
-var i=(t,e)=>{e._message&&t.addEventListener("message",s=>{e._message?.(s)}),e.connectionEstablished&&t.addEventListener("message",s=>{s.data?.messageType==="txdaConnectionAcknowledgement"&&e.connectionEstablished?.()}),e.updateCurrentDesign&&t.addEventListener("message",s=>{if(s.data?.messageType==="txdaCurrentDesign"){let{metaData:a,data:n}=s.data;e.updateCurrentDesign?.(n,a)}})};var p=(t,e={})=>new Promise((s,a)=>{t==="*"&&a("Specific target origins must be specified to connect to TXDA installs"),window.addEventListener("message",n=>{if(n.data?.messageType==="txdaMessagePortTransfer"){n.origin!==t&&a("Attempted TXDA connection event from unauthorized origin");let r=n.ports[0];i(r,e),r.start(),r.postMessage({messageType:"txdaRequestCurrentDesign"}),s({port:r,requestCurrentDesign:()=>r.postMessage({messageType:"txdaRequestCurrentDesign"})})}}),window.parent.postMessage({messageType:"txdaConnectionRequest",windowName:window.name},t),setTimeout(()=>{a("Connection to TXDA failed (timed out)")},1e4)});export{p as initialize};
+// src/handlers.ts
+var attachHandlers = (port, handlers) => {
+  if (handlers._message) {
+    port.addEventListener("message", (portEvent) => {
+      handlers._message?.(portEvent);
+    });
+  }
+  if (handlers.connectionEstablished) {
+    port.addEventListener("message", (portEvent) => {
+      if (portEvent.data?.messageType === "txdaConnectionAcknowledgement") {
+        handlers.connectionEstablished?.();
+      }
+    });
+  }
+  if (handlers.updateCurrentDesign) {
+    port.addEventListener("message", (portEvent) => {
+      if (portEvent.data?.messageType === "txdaCurrentDesign") {
+        const {
+          metaData,
+          data: currentDesign
+        } = portEvent.data;
+        handlers.updateCurrentDesign?.(currentDesign, metaData);
+      }
+    });
+  }
+};
+
+// src/index.ts
+var initialize = (origin, handlers = {}) => new Promise((resolve, reject) => {
+  if (origin === "*") {
+    reject("Specific target origins must be specified to connect to TXDA installs");
+  }
+  window.addEventListener("message", (windowEvent) => {
+    if (windowEvent.data?.messageType === "txdaMessagePortTransfer") {
+      if (windowEvent.origin !== origin) {
+        reject("Attempted TXDA connection event from unauthorized origin");
+      }
+      const port = windowEvent.ports[0];
+      attachHandlers(port, handlers);
+      port.start();
+      port.postMessage({ messageType: "txdaRequestCurrentDesign" });
+      const portWrapper = {
+        port,
+        requestCurrentDesign: () => port.postMessage({
+          messageType: "txdaRequestCurrentDesign"
+        })
+      };
+      resolve(portWrapper);
+    }
+  });
+  window.parent.postMessage({
+    messageType: "txdaConnectionRequest",
+    windowName: window.name
+  }, origin);
+  setTimeout(() => {
+    reject("Connection to TXDA failed (timed out)");
+  }, 1e4);
+});
+export {
+  initialize
+};
 //# sourceMappingURL=index.js.map

@@ -6,7 +6,7 @@
   "license": "Copyright",
   "scripts": {
     "build:iife": "esbuild src/index.ts --bundle --minify --sourcemap --platform=browser --format=iife --target=es2020 --global-name=txdaWebframeHelper --outfile=./dist/txda-webframe-helper.min.js",
-    "build:esm": "esbuild src/index.ts --bundle --minify --sourcemap --platform=browser --outdir=esm --format=esm && tsc --emitDeclarationOnly --outDir esm",
+    "build:esm": "esbuild src/index.ts --bundle --sourcemap --platform=browser --outdir=esm --format=esm && tsc --emitDeclarationOnly --outDir esm",
     "build:all": "yarn tsc:check && yarn build:iife && yarn build:esm",
     "build": "yarn build:all",
     "clean": "rm -rf ./dist/* && rm -rf ./esm/*",
