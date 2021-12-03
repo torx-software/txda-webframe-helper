@@ -29,6 +29,13 @@
   <script src="http://localhost:3456/txda-webframe-helper.min.js"></script>
 
   <script>
+    const updateSmilesSvg = smiles => {
+      const mol = window.rdkit.get_mol(smiles)
+      const svg = mol.get_svg()
+      const destination = document.getElementById('current-design')
+      destination.innerHtml = svg
+    }
+
     const log = (message, source) => {
       const messagesTextArea = document.getElementById('messages')
       const dateTime = moment(new Date()).format('yyyy-MM-DD HH:mm:ss,SS')
@@ -36,44 +43,54 @@
       messagesTextArea.scrollTop = messagesTextArea.scrollHeight
     }
 
-    const domContentLoadedMessageLog = message => log(message, 'DOMContentLoaded')
+    const messageLog = message => log(message, 'Log')
     const portLog = message => log(message, 'TXDA MessagePort')
 
+    const updateOrigin = async () => {
+      if (!window.rdkit) {
+        alert('RDKit not yet loaded, please try again')
+      }
+
+      if (window.txdaConnection) {
+        console.warn('Existing connection, disconnecting it')
+        window.txdaConnection.disconnect()
+      }
+
+      const origin = document.getElementById('origin').value
+
+      try {
+        messageLog('Initializing TXDA connection')
+
+        const handlers = {
+          connectionEstablished: () => {
+            portLog('TXDA connection established')
+          },
+          updateCurrentDesign: (currentDesign, metaData) => {
+            portLog('Current design updated')
+            portLog(JSON.stringify(currentDesign), space = 2)
+            portLog(JSON.stringify(metaData), space = 2)
+            updateSmilesSvg(currentDesign.smiles)
+          }
+        }
+
+        const txdaConnection = await txdaWebframeHelper.initialize(origin, handlers)
+        portLog(`Connection ${txdaConnection.id} connected`)
+        window.txdaConnection = txdaConnection
+      } catch (error) {
+        messageLog(`Failed to connect to origin ${origin}`)
+        console.error(error)
+      }
+
+    }
+
     window.addEventListener('DOMContentLoaded', (event) => {
-      domContentLoadedMessageLog('DOM loaded')
+      messageLog('DOM loaded')
       window.initRDKitModule()
         .then(async rdkit => {
-          domContentLoadedMessageLog('RDKitJS loaded')
-
-          const updateSmilesSvg = smiles => {
-            const mol = rdkit.get_mol(smiles)
-            const svg = mol.get_svg()
-            const destination = document.getElementById('current-design')
-            destination.innerHTML = svg
-          }
-
-          domContentLoadedMessageLog('Initializing TXDA connection')
-
-          try {
-            const handlers = {
-              connectionEstablished: () => {
-                portLog('TXDA connection established')
-              },
-              updateCurrentDesign: (currentDesign, metaData) => {
-                portLog('Current design updated')
-                portLog(JSON.stringify(currentDesign), space = 2)
-                portLog(JSON.stringify(metaData), space = 2)
-                updateSmilesSvg(currentDesign.smiles)
-              }
-            }
-            const portWrapper = await txdaWebframeHelper.initialize('https://design.cressetsoftware.com', handlers)
-          } catch (error) {
-            console.error(error)
-          }
+          window.rdkit = rdkit
+          messageLog('RDKitJS loaded')
         })
-        .catch(error => {
-          console.error(error)
-        })
+      document.getElementById('connect').addEventListener('click', updateOrigin)
     })
   </script>
 
@@ -82,6 +99,10 @@
 <body>
 
   <h1>Torx Design-Analyze webframe communication example</h1>
+
+  <label for="origin">Torx Design-Analyze URL</label>
+  <input id="origin" name="origin" title="Torx Design-Analyze URL" type="text" value="" />
+  <button id="connect" type="button">Connect</button>
 
   <h3>Message log</h3>
   <textarea title="messages" id="messages" disabled></textarea>
