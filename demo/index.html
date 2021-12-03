@@ -1,15 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TXDA Webframe helper demo</title>
+  <title>Torx Webframe Communication Example</title>
 
+  <style>
+    body {
+      margin: 5px;
 
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    #messages {
+      width: 50rem;
+      height: 30rem;
+    }
+  </style>
+
+  <script src="https://unpkg.com/moment@2.29.1/min/moment.min.js" crossorigin="anonymous"
+    integrity="sha384-Uz1UHyakAAz121kPY0Nx6ZGzYeUTy9zAtcpdwVmFCEwiTGPA2K6zSGgkKJEQfMhK"></script>
+
+  <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js" crossorigin="anonymous"
+    integrity="sha384-ZkjDUkSt5Fxhz1HtwgnZx6xwsGLU4B8gOIgY6ElEVkze7wCEoVRCB4pgnbrqB7qB"></script>
+
+  <script src="http://localhost:3456/txda-webframe-helper.min.js"></script>
+
+  <script>
+    const log = (message, source) => {
+      const messagesTextArea = document.getElementById('messages')
+      const dateTime = moment(new Date()).format('yyyy-MM-DD HH:mm:ss,SS')
+      messagesTextArea.textContent += `${dateTime} :: [${source}] :: ${message}\n`
+      messagesTextArea.scrollTop = messagesTextArea.scrollHeight
+    }
+
+    const domContentLoadedMessageLog = message => log(message, 'DOMContentLoaded')
+    const portLog = message => log(message, 'TXDA MessagePort')
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+      domContentLoadedMessageLog('DOM loaded')
+      window.initRDKitModule()
+        .then(async rdkit => {
+          domContentLoadedMessageLog('RDKitJS loaded')
+
+          const updateSmilesSvg = smiles => {
+            const mol = rdkit.get_mol(smiles)
+            const svg = mol.get_svg()
+            const destination = document.getElementById('current-design')
+            destination.innerHTML = svg
+          }
+
+          domContentLoadedMessageLog('Initializing TXDA connection')
+
+          try {
+            const handlers = {
+              connectionEstablished: () => {
+                portLog('TXDA connection established')
+              },
+              updateCurrentDesign: (currentDesign, metaData) => {
+                portLog('Current design updated')
+                portLog(JSON.stringify(currentDesign), space = 2)
+                portLog(JSON.stringify(metaData), space = 2)
+                updateSmilesSvg(currentDesign.smiles)
+              }
+            }
+            const portWrapper = await txdaWebframeHelper.initialize('https://design.cressetsoftware.com', handlers)
+          } catch (error) {
+            console.error(error)
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    })
+  </script>
 
 </head>
+
 <body>
 
+  <h1>Torx Design-Analyze webframe communication example</h1>
+
+  <h3>Message log</h3>
+  <textarea title="messages" id="messages" disabled></textarea>
+
+  <h3>Current design</h3>
+  <div id="current-design"></div>
+
 </body>
+
 </html>
