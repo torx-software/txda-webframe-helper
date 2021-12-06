@@ -33,7 +33,7 @@
       const mol = window.rdkit.get_mol(smiles)
       const svg = mol.get_svg()
       const destination = document.getElementById('current-design')
-      destination.innerHtml = svg
+      destination.innerHTML = svg
     }
 
     const log = (message, source) => {
