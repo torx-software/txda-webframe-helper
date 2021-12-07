@@ -12,7 +12,7 @@
     "clean": "rm -rf ./dist/* && rm -rf ./esm/* && rm -rf ./demo/*.js*",
     "demo:build": "yarn build:iife && cp dist/txda-webframe-helper.min.js* ./demo",
     "demo:serve": "yarn demo:build && serve -C -p 3456 ./demo",
-    "docs:build": "yarn typedoc --plugin typedoc-plugin-mdn-links --out docs ./src/index.ts ./src/types.ts",
+    "docs:build": "yarn typedoc --plugin typedoc-plugin-mdn-links --readme ./README.md --out docs ./src/index.ts ./src/types.ts",
     "docs:serve": "yarn docs:build && serve -p 3457 ./docs",
     "tsc:check": "tsc -noEmit",
     "watch": "yarn build --watch",
