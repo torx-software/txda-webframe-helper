@@ -12,21 +12,23 @@ export interface Design {
   smiles: string
 }
 
-export type messageHandler = (event: MessageEvent) => void
+export type MessageHandler = (event: MessageEvent) => void
+
+/** A function that accepts no arguments and returns nothing. */
 export type VoidFunction = () => void
-export type connectedHandler = VoidFunction
-export type disconnectedHandler = VoidFunction
-export type updateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
+export type ConnectedHandler = VoidFunction
+export type DisconnectedHandler = VoidFunction
+export type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
 
 export interface TXDAMessageHandlers {
-  /** An event handler that can accept any message from an {@link TXDAConnection._port}. This should not need to be used directly. */
-  _message?: messageHandler
+  /** An event handler that can accept any message from an {@linkcode TXDAConnection._port}. This should not need to be used directly. */
+  _message?: MessageHandler
   /** An event handler that is fired when the connection to Torx Design-Analyze is established. */
-  onConnected?: connectedHandler
+  onConnected?: ConnectedHandler
   /** An event handler that is fired when the connection to Torx Design-Analyze is disconnected. */
-  onDisconnected?: disconnectedHandler
-  /** An event handler that is fired when the current design is edited or changed in Torx Design-Analyze, or on request via {@link TXDAConnection.requestCurrentDesign}. */
-  onUpdateCurrentDesign?: updateCurrentDesignHandler
+  onDisconnected?: DisconnectedHandler
+  /** An event handler that is fired when the current design is edited or changed in Torx Design-Analyze, or on request via {@linkcode TXDAConnection.requestCurrentDesign}. */
+  onUpdateCurrentDesign?: UpdateCurrentDesignHandler
 }
 
 export interface TXDAConnection {
@@ -34,7 +36,7 @@ export interface TXDAConnection {
   id: string,
   /** The underlying {@link MessagePort} used to send and receive messages for this connection. This should not need to be used directly. */
   _port: MessagePort;
-  /** Request the latest current design be dispatched. Current design data can be handled with {@link TXDAMessageHandlers.onUpdateCurrentDesign}. */
+  /** Request the latest current design be dispatched. Current design data can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign}. */
   requestCurrentDesign: () => void
   /** Prevent messages being further sent or received on this connection. */
   disconnect: () => void
