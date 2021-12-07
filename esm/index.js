@@ -81,7 +81,8 @@ var attachHandlers = (port, handlers) => {
 };
 
 // src/index.ts
-var initialize = (origin, handlers = {}) => new Promise((resolve, reject) => {
+var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
+  const origin = new URL(url).origin;
   if (origin === "*") {
     reject("Specific target origins must be specified to connect to TXDA installs");
     return;
@@ -98,7 +99,7 @@ var initialize = (origin, handlers = {}) => new Promise((resolve, reject) => {
       port.postMessage({ messageType: "txdaRequestCurrentDesign" });
       const txdaConnection = {
         id: v4_default(),
-        port,
+        _port: port,
         requestCurrentDesign: () => port.postMessage({
           messageType: "txdaRequestCurrentDesign"
         }),

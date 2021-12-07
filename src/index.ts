@@ -3,8 +3,16 @@ import { v4 as uuidv4 } from 'uuid'
 import { attachHandlers } from "./handlers"
 import { TXDAConnection, TXDAMessageHandlers } from "./types"
 
-const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise<TXDAConnection> =>
+/**
+ * Request a connection to the Torx Design-Analyze application that the current page is embedded in.
+ * @param url The URL of the Torx Design-Analyze installation that the current page is embedded in. Used to ensure that only messages from the correct origin URL are accepted.
+ * @param handlers Event handlers to execute when events are received from Torx Design-Analyze.
+ * @returns
+ */
+const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TXDAConnection> =>
   new Promise((resolve, reject) => {
+    const origin = new URL(url).origin
+
     if (origin === '*') {
       reject('Specific target origins must be specified to connect to TXDA installs')
       return
@@ -29,7 +37,7 @@ const initialize = (origin: string, handlers: TXDAMessageHandlers = {}): Promise
 
         const txdaConnection: TXDAConnection = {
           id: uuidv4(),
-          port,
+          _port: port,
           requestCurrentDesign: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign'
           }),
