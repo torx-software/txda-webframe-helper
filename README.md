@@ -23,7 +23,7 @@ To configure in Torx Design-Analyze, add a `webframe` plugin configuration in th
 ```json
 {
   "url": "https://your-service.com",
-  "enableMessaging": true
+  "messagingEnabled": true
 }
 ```
 
@@ -41,7 +41,7 @@ To configure in Torx Design-Analyze, add a `webframe` plugin configuration in th
 ```json
 {
   "url": "https://torx-software.github.io/txda-webframe-helper",
-  "enableMessaging": true
+  "messagingEnabled": true
 }
 ```
 
