@@ -54,6 +54,7 @@
       if (window.txdaConnection) {
         windowLog('Existing connection, disconnecting it')
         window.txdaConnection.disconnect()
+        document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesignStructure)
       }
 
       const origin = document.getElementById('origin').value
@@ -73,12 +74,19 @@
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
             updateSmilesSvg(currentDesign.smiles)
+          },
+          onUpdateCurrentDesignStructure: (currentDesign, metaData) => {
+            portLog('Current design structure updated')
+            portLog(JSON.stringify(currentDesign), space = 2)
+            portLog(JSON.stringify(metaData), space = 2)
           }
         }
 
         const txdaConnection = await txdaWebframeHelper.initialize(origin, handlers)
+        console.log(`txdaConnection`, txdaConnection)
         portLog(`Connection ${txdaConnection.id} connected`)
         window.txdaConnection = txdaConnection
+        document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesignStructure)
       } catch (error) {
         windowLog(`Failed to connect to origin ${origin}`)
         console.error(error)
@@ -106,6 +114,7 @@
   <label for="origin">Torx Design-Analyze URL</label>
   <input id="origin" name="origin" title="Torx Design-Analyze URL" type="text" value="" />
   <button id="connect" type="button">Connect</button>
+  <button id="structure" type="button">Fetch 2D / 3D structure</button>
 
   <h3>Message log</h3>
   <textarea title="messages" id="messages" disabled></textarea>
