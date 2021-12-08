@@ -8,7 +8,7 @@ export const attachHandlers = (port: MessagePort, handlers: TXDAMessageHandlers)
   }
 
   if (handlers.onConnected) {
-    port.addEventListener('message', (portEvent: MessageEvent<Message<null | undefined>>) => {
+    port.addEventListener('message', (portEvent: MessageEvent<Message<undefined>>) => {
       if (portEvent.data?.messageType === 'txdaConnectionAcknowledgement') {
         handlers.onConnected?.(portEvent.data?.metaData)
       }
