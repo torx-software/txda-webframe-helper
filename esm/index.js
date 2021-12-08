@@ -78,6 +78,17 @@ var attachHandlers = (port, handlers) => {
       }
     });
   }
+  if (handlers.onUpdateCurrentDesignStructure) {
+    port.addEventListener("message", (portEvent) => {
+      if (portEvent.data?.messageType === "txdaCurrentDesignStructure") {
+        const {
+          metaData,
+          data: currentDesign
+        } = portEvent.data;
+        handlers.onUpdateCurrentDesignStructure?.(currentDesign, metaData);
+      }
+    });
+  }
 };
 
 // src/index.ts
@@ -106,6 +117,9 @@ var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
         _port: port,
         requestCurrentDesign: () => port.postMessage({
           messageType: "txdaRequestCurrentDesign"
+        }),
+        requestCurrentDesignStructure: () => port.postMessage({
+          messageType: "txdaRequestCurrentDesignStructure"
         }),
         disconnect: () => {
           port.close();

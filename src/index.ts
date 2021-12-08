@@ -48,6 +48,9 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
           requestCurrentDesign: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign'
           }),
+          requestCurrentDesignStructure: () => port.postMessage({
+            messageType: 'txdaRequestCurrentDesignStructure'
+          }),
           disconnect: () => {
             port.close()
             handlers.onDisconnected?.()
