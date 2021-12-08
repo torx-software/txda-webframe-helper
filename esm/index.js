@@ -63,7 +63,7 @@ var attachHandlers = (port, handlers) => {
   if (handlers.onConnected) {
     port.addEventListener("message", (portEvent) => {
       if (portEvent.data?.messageType === "txdaConnectionAcknowledgement") {
-        handlers.onConnected?.();
+        handlers.onConnected?.(portEvent.data?.metaData);
       }
     });
   }

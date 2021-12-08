@@ -1,6 +1,20 @@
+export interface User {
+    /** A unique UUIDv4 identifier for the user. */
+    id: string;
+    /** The user's username (email address). */
+    username: string;
+    /** The user's full name formatted with email address. */
+    listName: string;
+}
+export interface Project {
+    /** A unique UUIDv4 identifier for the project. */
+    id: string;
+    /** The name of the project. */
+    name: string;
+}
 export interface MetaData {
-    user: Object;
-    project: Object;
+    user: User;
+    project: Project;
 }
 export interface Design {
     /** A unique UUIDv4 identifier for the design. */
@@ -10,10 +24,23 @@ export interface Design {
     /** The SMILES of the design's structure. */
     smiles: string;
 }
+export declare enum MessageType {
+    txdaConnectionRequest = "txdaConnectionRequest",
+    txdaMessagePortTransfer = "txdaMessagePortTransfer",
+    txdaConnectionAcknowledgement = "txdaConnectionAcknowledgement",
+    txdaRequestCurrentDesign = "txdaRequestCurrentDesign",
+    txdaCurrentDesign = "txdaCurrentDesign"
+}
+export interface Message<T> {
+    messageType: MessageType;
+    metaData: MetaData;
+    data: T;
+}
 export declare type MessageHandler = (event: MessageEvent) => void;
 /** A function that accepts no arguments and returns nothing. */
 export declare type VoidFunction = () => void;
-export declare type ConnectedHandler = VoidFunction;
+export declare type MetaDataHandler = (metaData: MetaData) => void;
+export declare type ConnectedHandler = MetaDataHandler;
 export declare type DisconnectedHandler = VoidFunction;
 export declare type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void;
 export interface TXDAMessageHandlers {

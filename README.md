@@ -34,7 +34,7 @@ To configure in Torx Design-Analyze, add a `webframe` plugin configuration in th
 
 ## Demo
 
-A publicly available example page is available to show an example of integration. The source code for this example page is available [on GitHub](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html). No data are transferred outside of the example page, neverless it is not recommended to be to used with production data.
+A publicly available example page is available to show an example of integration. The source code for this example page is available [on GitHub](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html). No data are transferred outside of the example page, neverless use of this demonstration integration is not recommended or supported in use with production data and no security assumptions should be made when using it.
 
 To configure in Torx Design-Analyze, add a `webframe` plugin configuration in the Control Panel with the following configuration:
 

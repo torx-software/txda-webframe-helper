@@ -1,6 +1,22 @@
+export interface User {
+  /** A unique UUIDv4 identifier for the user. */
+  id: string
+  /** The user's username (email address). */
+  username: string
+  /** The user's full name formatted with email address. */
+  listName: string
+}
+
+export interface Project {
+  /** A unique UUIDv4 identifier for the project. */
+  id: string
+  /** The name of the project. */
+  name: string
+}
+
 export interface MetaData {
-  user: Object
-  project: Object
+  user: User
+  project: Project
 }
 
 export interface Design {
@@ -12,11 +28,29 @@ export interface Design {
   smiles: string
 }
 
+export enum MessageType {
+  txdaConnectionRequest = 'txdaConnectionRequest',
+  txdaMessagePortTransfer = 'txdaMessagePortTransfer',
+  txdaConnectionAcknowledgement = 'txdaConnectionAcknowledgement',
+
+  txdaRequestCurrentDesign = 'txdaRequestCurrentDesign',
+  txdaCurrentDesign = 'txdaCurrentDesign'
+}
+
+export interface Message<T> {
+  messageType: MessageType,
+  metaData: MetaData,
+  data: T
+}
+
 export type MessageHandler = (event: MessageEvent) => void
 
 /** A function that accepts no arguments and returns nothing. */
 export type VoidFunction = () => void
-export type ConnectedHandler = VoidFunction
+
+export type MetaDataHandler = (metaData: MetaData) => void
+
+export type ConnectedHandler = MetaDataHandler
 export type DisconnectedHandler = VoidFunction
 export type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
 
