@@ -93,6 +93,10 @@ var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
         reject("Attempted TXDA connection event from unauthorized origin");
         return;
       }
+      if (windowEvent.source !== window.parent) {
+        reject("Attempted TXDA connection event from unauthorized source");
+        return;
+      }
       const port = windowEvent.ports[0];
       attachHandlers(port, handlers);
       port.start();

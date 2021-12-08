@@ -20,8 +20,15 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
 
     function handleWindowEvent (windowEvent: MessageEvent) {
       if (windowEvent.data?.messageType === 'txdaMessagePortTransfer') {
+        // Ensure the origin of the message matches the specified URL's origin
         if (windowEvent.origin !== origin) {
           reject('Attempted TXDA connection event from unauthorized origin')
+          return
+        }
+
+        // Ensure that the source of the event is the window embedding this one
+        if (windowEvent.source !== window.parent) {
+          reject('Attempted TXDA connection event from unauthorized source')
           return
         }
 
