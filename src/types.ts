@@ -81,7 +81,7 @@ export interface TXDAMessageHandlers {
 export interface TXDAConnection {
   /** A unique identifier for this connection. */
   id: string,
-  /** The underlying {@link MessagePort} used to send and receive messages for this connection. This should not need to be used directly. */
+  /** The underlying `MessagePort` used to send and receive messages for this connection. This should not need to be used directly. */
   _port: MessagePort;
   /** Request the latest current design be dispatched. Current design data can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign}. */
   requestCurrentDesign: () => void
@@ -89,7 +89,7 @@ export interface TXDAConnection {
    * Request the latest current design be dispatched with structure. This is more expensive to fetch than {@linkcode TXDAConnection.requestCurrentDesign},
    * therefore it is not automatically dispatched on design edits and changes, and must be requested with this method.
    *
-   * Current design data with the 2D and 3D structure can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesignStructure}
+   * Current design data with the 2D and 3D structure can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesignStructure}.
    */
   requestCurrentDesignStructure: () => void
   /** Prevent messages being further sent or received on this connection. */
