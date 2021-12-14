@@ -83,7 +83,6 @@
         }
 
         const txdaConnection = await txdaWebframeHelper.initialize(origin, handlers)
-        console.log(`txdaConnection`, txdaConnection)
         portLog(`Connection ${txdaConnection.id} connected`)
         window.txdaConnection = txdaConnection
         document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesign3d)
