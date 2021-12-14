@@ -15,20 +15,54 @@ the parent Torx Design-Analyze application, and exchange data between the applic
   <h2>Usage</h2>
 </a>
 
-<a href="#library" id="library" style="color: inherit; text-decoration: none;">
-  <h3>Library</h3>
+<a href="#builds" id="builds" style="color: inherit; text-decoration: none;">
+  <h3>Builds</h3>
 </a>
 <p>There are two builds of the library available:</p>
-<ul>
-<li>IIFE (in <code>dist</code>): for use in the browser in <code>script</code> tags</li>
-<li>ES module (in <code>esm</code>): when integrating with a bundled application using ES6+</li>
-</ul>
 
-<a href="#embedded-pages" id="embedded-pages" style="color: inherit; text-decoration: none;">
-  <h3>Embedded pages</h3>
+<a href="#iife-build" id="iife-build" style="color: inherit; text-decoration: none;">
+  <h4>IIFE build</h4>
 </a>
-<p>To configure in Torx Design-Analyze, add a <code>webframe</code> plugin configuration in the Control Panel with the following configuration:</p>
-<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;url&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;https://your-service.com&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;messagingEnabled&quot;</span><span class="hl-0">: </span><span class="hl-3">true</span><br/><span class="hl-0">}</span>
+<p>The IIFE build is in the <code>dist</code> folder of this repository, and can be included in a webpage in a <code>script</code> tag, loading <code>txda-webframe-helper.min.js</code>:</p>
+<pre><code class="language-html"><span class="hl-0">&lt;</span><span class="hl-1">script</span><span class="hl-2"> </span><span class="hl-3">src</span><span class="hl-2">=</span><span class="hl-4">&quot;path/to/txda-webframe-helper.min.js&quot;</span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span>
+</code></pre>
+<p>As an alternative to hosting the script, it can be loaded from a CDN, for example:</p>
+<pre><code class="language-html"><span class="hl-0">&lt;</span><span class="hl-1">script</span><br/><span class="hl-2">  </span><span class="hl-3">src</span><span class="hl-2">=</span><span class="hl-4">&quot;https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@d008f3c/dist/txda-webframe-helper.min.js&quot;</span><br/><span class="hl-2">  </span><span class="hl-3">integrity</span><span class="hl-2">=</span><span class="hl-4">&quot;sha384-VnIm+ZAYynIkBZtkas1w0GoJ+A89rc+EiHh0N0StnH8xMFRhC5Mq+D/zbSWN0TOQ&quot;</span><br/><span class="hl-2">  </span><span class="hl-3">crossorigin</span><span class="hl-2">=</span><span class="hl-4">&quot;anonymous&quot;</span><br/><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span>
+</code></pre>
+<p>The above example references a specific commit. To update to a new version, replace the <code>@d008f3c</code> with the version (commit, or release tag) that you wish to use. The <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">subresource integrity</a> hash will need to be updated.</p>
+<p>When loaded, the script provides a <code>window</code> global object <code>txdaWebframeHelper</code>. See <a href="#establishing-a-connection-to-torx-design-analyze">the section below</a> for usage.</p>
+<p>An example can be found in the source of the <a href="https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html">demonstration page</a>.</p>
+
+<a href="#es-module-build" id="es-module-build" style="color: inherit; text-decoration: none;">
+  <h4>ES module build</h4>
+</a>
+<p>The ES module build is in the <code>esm</code> folder of this repository, and can be used when integrating with a bundled application using ES6+ modules. To use the ESM build, install the package from GitHub, replacing the <code>#commit-hash</code> at the end of the URI with the desired version:</p>
+<p>NPM:</p>
+<pre><code><span class="hl-5">npm</span><span class="hl-6"> </span><span class="hl-5">install</span><span class="hl-6"> --</span><span class="hl-5">save</span><span class="hl-6"> </span><span class="hl-5">git</span><span class="hl-6">+</span><span class="hl-7">https</span><span class="hl-6">:</span><span class="hl-8">//github.com/torx-software/txda-webframe-helper.git#d008f3c</span>
+</code></pre>
+<p>Yarn:</p>
+<pre><code class="language-shell"><span class="hl-6">yarn add git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c</span>
+</code></pre>
+<p>Or the repository can be added directly to a <code>package.json</code>, followed by <code>npm install</code> or <code>yarn</code>:</p>
+<pre><code class="language-json"><span class="hl-6">  </span><span class="hl-9">&quot;dependencies&quot;</span><span class="hl-6">: {</span><br/><span class="hl-6">    </span><span class="hl-10">&quot;txda-webframe-helper&quot;</span><span class="hl-6">: </span><span class="hl-9">&quot;git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c&quot;</span><br/><span class="hl-6">  }</span>
+</code></pre>
+<p>The ES module build is shipped with TypeScript declaration files, which provides type safety if your project uses TypeScript, and autocompletion in TypeScript and JavaScript projects in supported text editors such as Visual Studio Code.</p>
+
+<a href="#establishing-a-connection-to-torx-design-analyze" id="establishing-a-connection-to-torx-design-analyze" style="color: inherit; text-decoration: none;">
+  <h3>Establishing a connection to Torx Design-Analyze</h3>
+</a>
+<p>A single function, <a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a>, is provided to initiate a connection with Torx Design-Analyze which contains a single method:</p>
+<ul>
+<li>IIFE build: available as <code>window.txdaWebframeHelper.initialize</code></li>
+<li>ES module build: importable with <code>import { initialize } from txda-webframe-helper/esm</code></li>
+</ul>
+<p><a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a> retrieves a <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html"><code>TXDAConnection</code></a> object, which can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html">documentation</a>. See the <a href="https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html">example demostration page</a> for demonstrated example.</p>
+
+<a href="#embedding-in-torx-design-analyze" id="embedding-in-torx-design-analyze" style="color: inherit; text-decoration: none;">
+  <h3>Embedding in Torx Design-Analyze</h3>
+</a>
+<p>To configure your application to be embedded in an <code>iframe</code> in Torx Design-Analyze, add a <code>webframe</code> plugin configuration in the Control Panel with the following configuration:</p>
+<pre><code class="language-json"><span class="hl-6">{</span><br/><span class="hl-6">  </span><span class="hl-10">&quot;url&quot;</span><span class="hl-6">: </span><span class="hl-9">&quot;https://your-service.com&quot;</span><span class="hl-6">,</span><br/><span class="hl-6">  </span><span class="hl-10">&quot;messagingEnabled&quot;</span><span class="hl-6">: </span><span class="hl-11">true</span><br/><span class="hl-6">}</span>
 </code></pre>
 
 <a href="#required-security-practices-when-embedding" id="required-security-practices-when-embedding" style="color: inherit; text-decoration: none;">
@@ -44,7 +78,7 @@ the parent Torx Design-Analyze application, and exchange data between the applic
 </a>
 <p>A publicly available example page is available to show an example of integration. The source code for this example page is available <a href="https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html">on GitHub</a>. No data are transferred outside of the example page, neverless use of this demonstration integration is not recommended or supported in use with production data and no security assumptions should be made when using it.</p>
 <p>To configure in Torx Design-Analyze, add a <code>webframe</code> plugin configuration in the Control Panel with the following configuration:</p>
-<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;url&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;https://torx-software.github.io/txda-webframe-helper&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;messagingEnabled&quot;</span><span class="hl-0">: </span><span class="hl-3">true</span><br/><span class="hl-0">}</span>
+<pre><code class="language-json"><span class="hl-6">{</span><br/><span class="hl-6">  </span><span class="hl-10">&quot;url&quot;</span><span class="hl-6">: </span><span class="hl-9">&quot;https://torx-software.github.io/txda-webframe-helper&quot;</span><span class="hl-6">,</span><br/><span class="hl-6">  </span><span class="hl-10">&quot;messagingEnabled&quot;</span><span class="hl-6">: </span><span class="hl-11">true</span><br/><span class="hl-6">}</span>
 </code></pre>
 
 <a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
