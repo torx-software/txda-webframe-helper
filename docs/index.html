@@ -47,16 +47,17 @@ the parent Torx Design-Analyze application, and exchange data between the applic
 <pre><code class="language-json"><span class="hl-6">  </span><span class="hl-9">&quot;dependencies&quot;</span><span class="hl-6">: {</span><br/><span class="hl-6">    </span><span class="hl-10">&quot;txda-webframe-helper&quot;</span><span class="hl-6">: </span><span class="hl-9">&quot;git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c&quot;</span><br/><span class="hl-6">  }</span>
 </code></pre>
 <p>The ES module build is shipped with TypeScript declaration files, which provides type safety if your project uses TypeScript, and autocompletion in TypeScript and JavaScript projects in supported text editors such as Visual Studio Code.</p>
+<p>See <a href="#establishing-a-connection-to-torx-design-analyze">the section below</a> for usage.</p>
 
 <a href="#establishing-a-connection-to-torx-design-analyze" id="establishing-a-connection-to-torx-design-analyze" style="color: inherit; text-decoration: none;">
   <h3>Establishing a connection to Torx Design-Analyze</h3>
 </a>
-<p>A single function, <a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a>, is provided to initiate a connection with Torx Design-Analyze which contains a single method:</p>
+<p>A single function, <a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a>, is provided to initiate a connection with Torx Design-Analyze:</p>
 <ul>
 <li>IIFE build: available as <code>window.txdaWebframeHelper.initialize</code></li>
 <li>ES module build: importable with <code>import { initialize } from txda-webframe-helper/esm</code></li>
 </ul>
-<p><a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a> retrieves a <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html"><code>TXDAConnection</code></a> object, which can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html">documentation</a>. See the <a href="https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html">example demostration page</a> for demonstrated example.</p>
+<p><a href="https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize"><code>initialize</code></a> returns a <code>Promise</code> that resolves to a <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html"><code>TXDAConnection</code></a> object. <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html"><code>TXDAConnection</code></a> can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the <a href="https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html">documentation</a>. See the <a href="https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html">example demonstration page</a> for a worked example.</p>
 
 <a href="#embedding-in-torx-design-analyze" id="embedding-in-torx-design-analyze" style="color: inherit; text-decoration: none;">
   <h3>Embedding in Torx Design-Analyze</h3>
