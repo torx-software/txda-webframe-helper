@@ -101,6 +101,9 @@
           window.rdkit = rdkit
           windowLog('RDKitJS loaded')
         })
+        .catch(error => {
+          windowLog('Error loading RDKitJS')
+        })
       document.getElementById('connect').addEventListener('click', updateOrigin)
     })
   </script>
