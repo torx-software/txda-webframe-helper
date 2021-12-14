@@ -63,14 +63,16 @@ Or the repository can be added directly to a `package.json`, followed by `npm in
 
 The ES module build is shipped with TypeScript declaration files, which provides type safety if your project uses TypeScript, and autocompletion in TypeScript and JavaScript projects in supported text editors such as Visual Studio Code.
 
+See [the section below](#establishing-a-connection-to-torx-design-analyze) for usage.
+
 ### Establishing a connection to Torx Design-Analyze
 
-A single function, [`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize), is provided to initiate a connection with Torx Design-Analyze which contains a single method:
+A single function, [`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize), is provided to initiate a connection with Torx Design-Analyze:
 
 - IIFE build: available as `window.txdaWebframeHelper.initialize`
 - ES module build: importable with `import { initialize } from txda-webframe-helper/esm`
 
-[`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize) retrieves a [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) object, which can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the [documentation](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html). See the [example demostration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html) for demonstrated example.
+[`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize) returns a `Promise` that resolves to a [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) object. [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the [documentation](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html). See the [example demonstration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html) for a worked example.
 
 ### Embedding in Torx Design-Analyze
 
