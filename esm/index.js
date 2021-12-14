@@ -98,7 +98,7 @@ var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
     reject("Specific target origins must be specified to connect to TXDA installs");
     return;
   }
-  function handleWindowEvent(windowEvent) {
+  const handleWindowEvent = (windowEvent) => {
     if (windowEvent.data?.messageType === "txdaMessagePortTransfer") {
       if (windowEvent.origin !== origin) {
         reject("Attempted TXDA connection event from unauthorized origin");
@@ -127,10 +127,9 @@ var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
         }
       };
       resolve(txdaConnection);
-      window.removeEventListener("message", handleWindowEvent);
     }
-  }
-  window.addEventListener("message", handleWindowEvent);
+  };
+  window.addEventListener("message", handleWindowEvent, { once: true });
   window.parent.postMessage({
     messageType: "txdaConnectionRequest",
     windowName: window.name

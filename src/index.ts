@@ -18,7 +18,7 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
       return
     }
 
-    function handleWindowEvent (windowEvent: MessageEvent) {
+    const handleWindowEvent = (windowEvent: MessageEvent) => {
       if (windowEvent.data?.messageType === 'txdaMessagePortTransfer') {
         // Ensure the origin of the message matches the specified URL's origin
         if (windowEvent.origin !== origin) {
@@ -58,14 +58,12 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
         }
 
         resolve(txdaConnection)
-
-        // After establishing the port, unhook this function from receiving further requests
-        window.removeEventListener('message', handleWindowEvent)
       }
     }
 
-    // Listen for events from TXDA for initial setup of MessagePort
-    window.addEventListener('message', handleWindowEvent)
+    // Listen for events from TXDA for initial setup of MessagePort,
+    // removing the event listener after a single invocation
+    window.addEventListener('message', handleWindowEvent, { once: true })
 
     window.parent.postMessage({
       messageType: 'txdaConnectionRequest',
