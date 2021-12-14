@@ -13,7 +13,30 @@ the parent Torx Design-Analyze application, and exchange data between the applic
 
 There are two builds of the library available:
 
-- IIFE (in `dist`): for use in the browser in `script` tags
+#### IIFE build
+
+The IIFE build is in the `dist` folder of this repository, and can be included in a webpage in a `script` tag, loading `txda-webframe-helper.min.js`:
+
+```html
+<script src="path/to/txda-webframe-helper.min.js"></script>
+```
+
+As an alternative to hosting the script, it can be loaded from a CDN, for example:
+
+```html
+<script
+  src="https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@d008f3c/dist/txda-webframe-helper.min.js"
+  integrity="sha384-VnIm+ZAYynIkBZtkas1w0GoJ+A89rc+EiHh0N0StnH8xMFRhC5Mq+D/zbSWN0TOQ"
+  crossorigin="anonymous"
+></script>
+```
+
+The above example references a specific commit. To update a new version, replace the `@d008f3c` with the version (commit, or release tag) that you wish to use. The [subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hash will need to be updated.
+
+An example can be found in the source of the [demonstration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html).
+
+#### ES module build
+
 - ES module (in `esm`): when integrating with a bundled application using ES6+
 
 ### Embedded pages
