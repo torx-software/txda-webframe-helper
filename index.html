@@ -24,7 +24,7 @@
     integrity="sha384-Uz1UHyakAAz121kPY0Nx6ZGzYeUTy9zAtcpdwVmFCEwiTGPA2K6zSGgkKJEQfMhK"></script>
 
   <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js" crossorigin="anonymous"
-    integrity="sha384-ZkjDUkSt5Fxhz1HtwgnZx6xwsGLU4B8gOIgY6ElEVkze7wCEoVRCB4pgnbrqB7qB"></script>
+    integrity="sha384-T65Zy151LZPepfE8vbaFpuOm6RrQY33s6LFyWmO+tvaLiHocbL5DpmwIty9VxafX"></script>
 
   <script src="https://torx-software.github.io/txda-webframe-helper/txda-webframe-helper.min.js" crossorigin="anonymous"></script>
 
@@ -54,7 +54,7 @@
       if (window.txdaConnection) {
         windowLog('Existing connection, disconnecting it')
         window.txdaConnection.disconnect()
-        document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesignStructure)
+        document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesign3d)
       }
 
       const origin = document.getElementById('origin').value
@@ -75,18 +75,17 @@
             portLog(JSON.stringify(metaData), space = 2)
             updateSmilesSvg(currentDesign.smiles)
           },
-          onUpdateCurrentDesignStructure: (currentDesign, metaData) => {
-            portLog('Current design structure updated')
+          onUpdateCurrentDesign3d: (currentDesign, metaData) => {
+            portLog('Current design 3D structure updated')
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
           }
         }
 
         const txdaConnection = await txdaWebframeHelper.initialize(origin, handlers)
-        console.log(`txdaConnection`, txdaConnection)
         portLog(`Connection ${txdaConnection.id} connected`)
         window.txdaConnection = txdaConnection
-        document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesignStructure)
+        document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesign3d)
       } catch (error) {
         windowLog(`Failed to connect to origin ${origin}`)
         console.error(error)
@@ -96,11 +95,19 @@
 
     window.addEventListener('DOMContentLoaded', (event) => {
       windowLog('DOM loaded')
-      window.initRDKitModule()
-        .then(async rdkit => {
-          window.rdkit = rdkit
-          windowLog('RDKitJS loaded')
-        })
+
+      try {
+        window.initRDKitModule()
+          .then(async rdkit => {
+            window.rdkit = rdkit
+            windowLog('RDKitJS loaded')
+          })
+          .catch(error => {
+            windowLog('Error loading RDKitJS')
+          })
+      } catch (error) {
+        windowLog('Unable to find RDKitJS')
+      }
       document.getElementById('connect').addEventListener('click', updateOrigin)
     })
   </script>
@@ -114,7 +121,7 @@
   <label for="origin">Torx Design-Analyze URL</label>
   <input id="origin" name="origin" title="Torx Design-Analyze URL" type="text" value="" />
   <button id="connect" type="button">Connect</button>
-  <button id="structure" type="button">Fetch 2D / 3D structure</button>
+  <button id="structure" type="button">Fetch 3D structure</button>
 
   <h3>Message log</h3>
   <textarea title="messages" id="messages" disabled></textarea>
