@@ -27,14 +27,14 @@ export const attachHandlers = (port: MessagePort, handlers: TXDAMessageHandlers)
     })
   }
 
-  if (handlers.onUpdateCurrentDesignStructure) {
+  if (handlers.onUpdateCurrentDesign3d) {
     port.addEventListener('message', (portEvent: MessageEvent<Message<DesignStructure>>) => {
-      if (portEvent.data?.messageType === 'txdaCurrentDesignStructure') {
+      if (portEvent.data?.messageType === 'txdaCurrentDesign3d') {
         const {
           metaData,
           data: currentDesign
         } = portEvent.data
-        handlers.onUpdateCurrentDesignStructure?.(currentDesign, metaData)
+        handlers.onUpdateCurrentDesign3d?.(currentDesign, metaData)
       }
     })
   }

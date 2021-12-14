@@ -36,8 +36,8 @@ export declare enum MessageType {
     txdaConnectionAcknowledgement = "txdaConnectionAcknowledgement",
     txdaRequestCurrentDesign = "txdaRequestCurrentDesign",
     txdaCurrentDesign = "txdaCurrentDesign",
-    txdaRequestCurrentDesignStructure = "txdaRequestCurrentDesignStructure",
-    txdaCurrentDesignStructure = "txdaCurrentDesignStructure"
+    txdaRequestCurrentDesign3d = "txdaRequestCurrentDesign3d",
+    txdaCurrentDesign3d = "txdaCurrentDesign3d"
 }
 export interface Message<T> {
     messageType: MessageType;
@@ -51,7 +51,7 @@ export declare type MetaDataHandler = (metaData: MetaData) => void;
 export declare type ConnectedHandler = MetaDataHandler;
 export declare type DisconnectedHandler = VoidFunction;
 export declare type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void;
-export declare type UpdateCurrentDesignStructureHandler = (currentDesign: DesignStructure, metaData: MetaData) => void;
+export declare type UpdateCurrentDesign3dHandler = (currentDesign: DesignStructure, metaData: MetaData) => void;
 export interface TXDAMessageHandlers {
     /** An event handler that can accept any message from an {@linkcode TXDAConnection._port}. This should not need to be used directly. */
     _message?: MessageHandler;
@@ -61,23 +61,23 @@ export interface TXDAMessageHandlers {
     onDisconnected?: DisconnectedHandler;
     /** An event handler that is fired when the current design is edited or changed in Torx Design-Analyze, or on request via {@linkcode TXDAConnection.requestCurrentDesign}. */
     onUpdateCurrentDesign?: UpdateCurrentDesignHandler;
-    /** An event handler that is fired on request via {@linkcode TXDAConnection.requestCurrentDesignStructure}. */
-    onUpdateCurrentDesignStructure?: UpdateCurrentDesignStructureHandler;
+    /** An event handler that is fired on request via {@linkcode TXDAConnection.requestCurrentDesign3d}. */
+    onUpdateCurrentDesign3d?: UpdateCurrentDesign3dHandler;
 }
 export interface TXDAConnection {
     /** A unique identifier for this connection. */
     id: string;
-    /** The underlying {@link MessagePort} used to send and receive messages for this connection. This should not need to be used directly. */
+    /** The underlying `MessagePort` used to send and receive messages for this connection. This should not need to be used directly. */
     _port: MessagePort;
     /** Request the latest current design be dispatched. Current design data can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign}. */
     requestCurrentDesign: () => void;
     /**
-     * Request the latest current design be dispatched with structure. This is more expensive to fetch than {@linkcode TXDAConnection.requestCurrentDesign},
+     * Request the latest current design be dispatched with its 3D structure (if any). This is more expensive to fetch than {@linkcode TXDAConnection.requestCurrentDesign},
      * therefore it is not automatically dispatched on design edits and changes, and must be requested with this method.
      *
-     * Current design data with the 2D and 3D structure can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesignStructure}
+     * Current design data with the 3D structure can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign3d}.
      */
-    requestCurrentDesignStructure: () => void;
+    requestCurrentDesign3d: () => void;
     /** Prevent messages being further sent or received on this connection. */
     disconnect: () => void;
 }

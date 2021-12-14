@@ -54,7 +54,7 @@
       if (window.txdaConnection) {
         windowLog('Existing connection, disconnecting it')
         window.txdaConnection.disconnect()
-        document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesignStructure)
+        document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesign3d)
       }
 
       const origin = document.getElementById('origin').value
@@ -75,8 +75,8 @@
             portLog(JSON.stringify(metaData), space = 2)
             updateSmilesSvg(currentDesign.smiles)
           },
-          onUpdateCurrentDesignStructure: (currentDesign, metaData) => {
-            portLog('Current design structure updated')
+          onUpdateCurrentDesign3d: (currentDesign, metaData) => {
+            portLog('Current design 3D structure updated')
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
           }
@@ -86,7 +86,7 @@
         console.log(`txdaConnection`, txdaConnection)
         portLog(`Connection ${txdaConnection.id} connected`)
         window.txdaConnection = txdaConnection
-        document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesignStructure)
+        document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesign3d)
       } catch (error) {
         windowLog(`Failed to connect to origin ${origin}`)
         console.error(error)

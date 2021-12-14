@@ -78,14 +78,14 @@ var attachHandlers = (port, handlers) => {
       }
     });
   }
-  if (handlers.onUpdateCurrentDesignStructure) {
+  if (handlers.onUpdateCurrentDesign3d) {
     port.addEventListener("message", (portEvent) => {
-      if (portEvent.data?.messageType === "txdaCurrentDesignStructure") {
+      if (portEvent.data?.messageType === "txdaCurrentDesign3d") {
         const {
           metaData,
           data: currentDesign
         } = portEvent.data;
-        handlers.onUpdateCurrentDesignStructure?.(currentDesign, metaData);
+        handlers.onUpdateCurrentDesign3d?.(currentDesign, metaData);
       }
     });
   }
@@ -118,8 +118,8 @@ var initialize = (url, handlers = {}) => new Promise((resolve, reject) => {
         requestCurrentDesign: () => port.postMessage({
           messageType: "txdaRequestCurrentDesign"
         }),
-        requestCurrentDesignStructure: () => port.postMessage({
-          messageType: "txdaRequestCurrentDesignStructure"
+        requestCurrentDesign3d: () => port.postMessage({
+          messageType: "txdaRequestCurrentDesign3d"
         }),
         disconnect: () => {
           port.close();
