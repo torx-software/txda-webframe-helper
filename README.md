@@ -9,7 +9,7 @@ the parent Torx Design-Analyze application, and exchange data between the applic
 
 ## Usage
 
-### Library
+### Builds
 
 There are two builds of the library available:
 
@@ -31,17 +31,50 @@ As an alternative to hosting the script, it can be loaded from a CDN, for exampl
 ></script>
 ```
 
-The above example references a specific commit. To update a new version, replace the `@d008f3c` with the version (commit, or release tag) that you wish to use. The [subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hash will need to be updated.
+The above example references a specific commit. To update to a new version, replace the `@d008f3c` with the version (commit, or release tag) that you wish to use. The [subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hash will need to be updated.
+
+When loaded, the script provides a `window` global object `txdaWebframeHelper`. See [the section below](#establishing-a-connection-to-torx-design-analyze) for usage.
 
 An example can be found in the source of the [demonstration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html).
 
 #### ES module build
 
-- ES module (in `esm`): when integrating with a bundled application using ES6+
+The ES module build is in the `esm` folder of this repository, and can be used when integrating with a bundled application using ES6+ modules. To use the ESM build, install the package from GitHub, replacing the `#commit-hash` at the end of the URI with the desired version:
 
-### Embedded pages
+NPM:
 
-To configure in Torx Design-Analyze, add a `webframe` plugin configuration in the Control Panel with the following configuration:
+```
+npm install --save git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c
+```
+
+Yarn:
+
+```shell
+yarn add git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c
+```
+
+Or the repository can be added directly to a `package.json`, followed by `npm install` or `yarn`:
+
+```json
+  "dependencies": {
+    "txda-webframe-helper": "git+https://github.com/torx-software/txda-webframe-helper.git#d008f3c"
+  }
+```
+
+The ES module build is shipped with TypeScript declaration files, which provides type safety if your project uses TypeScript, and autocompletion in TypeScript and JavaScript projects in supported text editors such as Visual Studio Code.
+
+### Establishing a connection to Torx Design-Analyze
+
+A single function, [`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize), is provided to initiate a connection with Torx Design-Analyze which contains a single method:
+
+- IIFE build: available as `window.txdaWebframeHelper.initialize`
+- ES module build: importable with `import { initialize } from txda-webframe-helper/esm`
+
+[`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize) retrieves a [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) object, which can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the [documentation](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html). See the [example demostration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html) for demonstrated example.
+
+### Embedding in Torx Design-Analyze
+
+To configure your application to be embedded in an `iframe` in Torx Design-Analyze, add a `webframe` plugin configuration in the Control Panel with the following configuration:
 
 ```json
 {
