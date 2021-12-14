@@ -96,14 +96,19 @@
 
     window.addEventListener('DOMContentLoaded', (event) => {
       windowLog('DOM loaded')
-      window.initRDKitModule()
-        .then(async rdkit => {
-          window.rdkit = rdkit
-          windowLog('RDKitJS loaded')
-        })
-        .catch(error => {
-          windowLog('Error loading RDKitJS')
-        })
+
+      try {
+        window.initRDKitModule()
+          .then(async rdkit => {
+            window.rdkit = rdkit
+            windowLog('RDKitJS loaded')
+          })
+          .catch(error => {
+            windowLog('Error loading RDKitJS')
+          })
+      } catch (error) {
+        windowLog('Unable to find RDKitJS')
+      }
       document.getElementById('connect').addEventListener('click', updateOrigin)
     })
   </script>
