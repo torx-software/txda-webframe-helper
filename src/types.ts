@@ -79,8 +79,6 @@ export interface TXDAMessageHandlers {
 }
 
 export interface TXDAConnection {
-  /** A unique identifier for this connection. */
-  id: string,
   /** The underlying `MessagePort` used to send and receive messages for this connection. This should not need to be used directly. */
   _port: MessagePort;
   /** Request the latest current design be dispatched. Current design data can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign}. */

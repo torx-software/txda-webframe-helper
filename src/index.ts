@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
-
 import { attachHandlers } from "./handlers"
 import { TXDAConnection, TXDAMessageHandlers } from "./types"
 
@@ -42,7 +40,6 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
         port.postMessage({ messageType: 'txdaRequestCurrentDesign' })
 
         const txdaConnection: TXDAConnection = {
-          id: uuidv4(),
           _port: port,
           requestCurrentDesign: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign'
