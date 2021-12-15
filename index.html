@@ -26,9 +26,7 @@
   <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js" crossorigin="anonymous"
     integrity="sha384-T65Zy151LZPepfE8vbaFpuOm6RrQY33s6LFyWmO+tvaLiHocbL5DpmwIty9VxafX"></script>
 
-  <script src="https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@d008f3c/dist/txda-webframe-helper.min.js"
-    integrity="sha384-VnIm+ZAYynIkBZtkas1w0GoJ+A89rc+EiHh0N0StnH8xMFRhC5Mq+D/zbSWN0TOQ"
-    crossorigin="anonymous"></script>
+  <script src="http://localhost:3456/txda-webframe-helper.min.js"></script>
 
   <script>
     const updateSmilesSvg = smiles => {
@@ -85,7 +83,7 @@
         }
 
         const txdaConnection = await txdaWebframeHelper.initialize(origin, handlers)
-        portLog(`Connection ${txdaConnection.id} connected`)
+        portLog(`Connected`)
         window.txdaConnection = txdaConnection
         document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesign3d)
       } catch (error) {
