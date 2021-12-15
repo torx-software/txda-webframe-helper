@@ -106,3 +106,7 @@ To configure in Torx Design-Analyze, add a `webframe` plugin configuration in th
 ## Documentation
 
 Full TypeScript documentation for this helper library is available on [GitHub pages](https://torx-software.github.io/txda-webframe-helper/docs/).
+
+## Notices
+
+Copyright © 2021 Torx Software Ltd
