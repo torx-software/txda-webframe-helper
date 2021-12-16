@@ -70,7 +70,7 @@ See [the section below](#establishing-a-connection-to-torx-design-analyze) for u
 A single function, [`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize), is provided to initiate a connection with Torx Design-Analyze:
 
 - IIFE build: available as `window.txdaWebframeHelper.initialize`
-- ES module build: importable with `import { initialize } from txda-webframe-helper/esm`
+- ES module build: importable with `import { initialize } from 'txda-webframe-helper/esm'`
 
 [`initialize`](https://torx-software.github.io/txda-webframe-helper/docs/modules/index.html#initialize) returns a `Promise` that resolves to a [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) object. [`TXDAConnection`](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html) can be used to set up event listeners for incoming data, and call methods to send requests to Torx Design-Analyze. Full details of supported listeners and methods are available in the [documentation](https://torx-software.github.io/txda-webframe-helper/docs/interfaces/types.TXDAConnection.html). See the [example demonstration page](https://github.com/torx-software/txda-webframe-helper/blob/master/demo/index.html) for a worked example.
 
