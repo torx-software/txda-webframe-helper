@@ -1,4 +1,4 @@
-import { Design, DesignStructure, Message, TXDAMessageHandlers } from "./types"
+import { Design, DesignData, DesignStructure, Message, TXDAMessageHandlers } from "./types"
 
 export const attachHandlers = (port: MessagePort, handlers: TXDAMessageHandlers) => {
   if (handlers._message) {
@@ -35,6 +35,18 @@ export const attachHandlers = (port: MessagePort, handlers: TXDAMessageHandlers)
           data: currentDesign
         } = portEvent.data
         handlers.onUpdateCurrentDesign3d?.(currentDesign, metaData)
+      }
+    })
+  }
+
+  if (handlers.onUpdateCurrentDesignData) {
+    port.addEventListener('message', (portEvent: MessageEvent<Message<DesignData>>) => {
+      if (portEvent.data?.messageType === 'txdaCurrentDesignData') {
+        const {
+          metaData,
+          data: currentDesign
+        } = portEvent.data
+        handlers.onUpdateCurrentDesignData?.(currentDesign, metaData)
       }
     })
   }

@@ -35,6 +35,18 @@ export interface DesignStructure extends Design {
   molBlock3d: string
 }
 
+export interface KeyValueData {
+  /** Arbitrary key:value pairs of data */
+  [key: string]: string | number | boolean | null
+}
+
+export interface DesignData {
+  /** All key:value data that is associated with the design */
+  designKeyValueData: KeyValueData
+  /** All key:value data that is associated with the structure of a design */
+  structureKeyValueData: KeyValueData
+}
+
 export enum MessageType {
   txdaConnectionRequest = 'txdaConnectionRequest',
   txdaMessagePortTransfer = 'txdaMessagePortTransfer',
@@ -44,7 +56,12 @@ export enum MessageType {
   txdaCurrentDesign = 'txdaCurrentDesign',
 
   txdaRequestCurrentDesign3d = 'txdaRequestCurrentDesign3d',
-  txdaCurrentDesign3d = 'txdaCurrentDesign3d'
+  txdaCurrentDesign3d = 'txdaCurrentDesign3d',
+
+  txdaRequestCurrentDesignData = 'txdaRequestCurrentDesignData',
+  txdaCurrentDesignData = 'txdaCurrentDesignData',
+  txdaAddCurrentDesignData = 'txdaAddCurrentDesignData',
+  txdaAddCurrentStateData = 'txdaAddCurrentStateData'
 }
 
 export interface Message<T> {
@@ -64,6 +81,7 @@ export type ConnectedHandler = MetaDataHandler
 export type DisconnectedHandler = VoidFunction
 export type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
 export type UpdateCurrentDesign3dHandler = (currentDesign: DesignStructure, metaData: MetaData) => void
+export type UpdateCurrentDesignDataHandler = (currentDesign: DesignData, metaData: MetaData) => void
 
 export interface TXDAMessageHandlers {
   /** An event handler that can accept any message from an {@linkcode TXDAConnection._port}. This should not need to be used directly. */
@@ -76,6 +94,8 @@ export interface TXDAMessageHandlers {
   onUpdateCurrentDesign?: UpdateCurrentDesignHandler
   /** An event handler that is fired on request via {@linkcode TXDAConnection.requestCurrentDesign3d}. */
   onUpdateCurrentDesign3d?: UpdateCurrentDesign3dHandler
+  /** An event handler that is fired on request for data via {@linkcode TXDAConnection.requestCurrentDesignData} */
+  onUpdateCurrentDesignData?: UpdateCurrentDesignDataHandler
 }
 
 export interface TXDAConnection {
@@ -90,6 +110,20 @@ export interface TXDAConnection {
    * Current design data with the 3D structure can be handled with {@linkcode TXDAMessageHandlers.onUpdateCurrentDesign3d}.
    */
   requestCurrentDesign3d: () => void
+  /**
+   * Request the data associated with the current design. This will be key:value pairs of data for the design and structure.
+   *
+   * Data is handled by {@linkcode TXDAMessageHandlers.onUpdateCurrentDesignData}
+   */
+  requestCurrentDesignData: () => void
+  /**
+   * Add arbitrary key:value data to the design. If the structure is modified later, design data will be kept.
+   */
+  addCurrentDesignData: (data: KeyValueData) => void
+  /**
+   * Add arbitrary key:value data to the specific structure of the design. If the structure is modified later, the data will no longer be shown.
+   */
+  addCurrentStructureData: (data: KeyValueData) => void
   /** Prevent messages being further sent or received on this connection. */
   disconnect: () => void
 }

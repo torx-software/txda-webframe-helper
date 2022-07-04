@@ -1,5 +1,5 @@
 import { attachHandlers } from "./handlers"
-import { TXDAConnection, TXDAMessageHandlers } from "./types"
+import { KeyValueData, TXDAConnection, TXDAMessageHandlers } from "./types"
 
 /**
  * Request a connection to the Torx Design-Analyze application that the current page is embedded in.
@@ -46,6 +46,17 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
           }),
           requestCurrentDesign3d: () => port.postMessage({
             messageType: 'txdaRequestCurrentDesign3d'
+          }),
+          requestCurrentDesignData: () => port.postMessage({
+            messageType: 'txdaRequestCurrentDesignData'
+          }),
+          addCurrentDesignData: (data: KeyValueData) => port.postMessage({
+            messageType: 'txdaAddCurrentDesignData',
+            data: data
+          }),
+          addCurrentStructureData: (data: KeyValueData) => port.postMessage({
+            messageType: 'txdaAddCurrentStructureData',
+            data: data
           }),
           disconnect: () => {
             port.close()
