@@ -43,7 +43,7 @@ export interface KeyValueData {
 export interface DesignData {
   /** All key:value data that is associated with the design */
   designKeyValueData: KeyValueData
-  /** All key:value data that is associated with the structure of a design */
+  /** All key:value data that is associated with the current structure of a design */
   structureKeyValueData: KeyValueData
 }
 

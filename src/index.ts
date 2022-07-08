@@ -52,11 +52,11 @@ const initialize = (url: string, handlers: TXDAMessageHandlers = {}): Promise<TX
           }),
           addCurrentDesignData: (data: KeyValueData) => port.postMessage({
             messageType: 'txdaAddCurrentDesignData',
-            data: data
+            data
           }),
           addCurrentStructureData: (data: KeyValueData) => port.postMessage({
             messageType: 'txdaAddCurrentStructureData',
-            data: data
+            data
           }),
           disconnect: () => {
             port.close()
