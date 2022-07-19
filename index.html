@@ -57,6 +57,9 @@
         windowLog('Existing connection, disconnecting it')
         window.txdaConnection.disconnect()
         document.getElementById('structure').removeEventListener('click', window.txdaConnection.requestCurrentDesign3d)
+        document.getElementById('fetch-data').removeEventListener('click', window.txdaConnection.requestCurrentDesignData)
+        document.getElementById('design-data').removeEventListener('click', window.txdaConnection.addDesignDataHandler)
+        document.getElementById('structure-data').removeEventListener('click', window.txdaConnection.addStructureDataHandler)
       }
 
       const origin = document.getElementById('origin').value
@@ -81,6 +84,11 @@
             portLog('Current design 3D structure updated')
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
+          },
+          onUpdateCurrentDesignData: (currentDesign, metaData) => {
+            portLog('Current design data updated')
+            portLog(JSON.stringify(currentDesign), space = 2)
+            portLog(JSON.stringify(metaData), space = 2)
           }
         }
 
@@ -88,6 +96,18 @@
         portLog(`Connected`)
         window.txdaConnection = txdaConnection
         document.getElementById('structure').addEventListener('click', txdaConnection.requestCurrentDesign3d)
+        document.getElementById('fetch-data').addEventListener('click', txdaConnection.requestCurrentDesignData)
+        // Construct new handlers for including form data in the action
+        window.txdaConnection.addDesignDataHandler = () => {
+          const data = { [document.getElementById('data-key').value]: document.getElementById('data-value').value }
+          txdaConnection.addCurrentDesignData(data)
+        }
+        window.txdaConnection.addStructureDataHandler = () => {
+          const data = { [document.getElementById('data-key').value]: document.getElementById('data-value').value }
+          txdaConnection.addCurrentStructureData(data)
+        }
+        document.getElementById('design-data').addEventListener('click', txdaConnection.addDesignDataHandler)
+        document.getElementById('structure-data').addEventListener('click', txdaConnection.addStructureDataHandler)
       } catch (error) {
         windowLog(`Failed to connect to origin ${origin}`)
         console.error(error)
@@ -120,13 +140,28 @@
 
   <h1>Torx Design-Analyze webframe communication example</h1>
 
-  <label for="origin">Torx Design-Analyze URL</label>
-  <input id="origin" name="origin" title="Torx Design-Analyze URL" type="text" value="" />
-  <button id="connect" type="button">Connect</button>
-  <button id="structure" type="button">Fetch 3D structure</button>
+  <p>
+    <label for="origin">Torx Design-Analyze URL</label>
+    <input id="origin" name="origin" title="Torx Design-Analyze URL" type="text" value="" />
+    <button id="connect" type="button">Connect</button>
+    <button id="structure" type="button">Fetch 3D structure</button>
+  </p>
 
   <h3>Message log</h3>
   <textarea title="messages" id="messages" disabled></textarea>
+
+  <h3>Design data</h3>
+  <p>
+    <button id="fetch-data" type="button">Fetch data</button>
+  </p>
+  <p>
+    <label for="data-key">Key</label>
+    <input id="data-key" name="key" title="Key for key-value data", type="text" />
+    <label for="data-value">Value</label>
+    <input id="data-value" name="value" title="Value for key-value data", type="text" />
+    <button id="design-data" type="button">Add design data</button>
+    <button id="structure-data" type="button">Add structure data</button>
+  </p>
 
   <h3>Current design</h3>
   <div id="current-design"></div>
