@@ -25,10 +25,10 @@ As an alternative to hosting the script, it can be loaded from a CDN, for exampl
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@d008f3c/dist/txda-webframe-helper.min.js"
-  integrity="sha384-VnIm+ZAYynIkBZtkas1w0GoJ+A89rc+EiHh0N0StnH8xMFRhC5Mq+D/zbSWN0TOQ"
-  crossorigin="anonymous"
-></script>
+ src="https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@0246699/dist/txda-webframe-helper.min.js"
+ integrity="sha384-Lm7cXXN8qC7E77e1aYvw9T15+cqTQxsOj5P/VEYVIBRqgaeVt6Ylhv5vij4crTnw"
+ crossorigin="anonymous">
+</script>
 ```
 
 The above example references a specific commit. To update to a new version, replace the `@d008f3c` with the version (commit, or release tag) that you wish to use. The [subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hash will need to be updated.
