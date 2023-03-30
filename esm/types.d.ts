@@ -40,6 +40,9 @@ export interface DesignData {
     /** All key:value data that is associated with the current structure of a design */
     structureKeyValueData: KeyValueData;
 }
+/** An array of unique UUIDv4 identifier for the selected designs. */
+export interface SelectedDesignIds extends Array<string> {
+}
 export declare enum MessageType {
     txdaConnectionRequest = "txdaConnectionRequest",
     txdaMessagePortTransfer = "txdaMessagePortTransfer",
@@ -51,7 +54,8 @@ export declare enum MessageType {
     txdaRequestCurrentDesignData = "txdaRequestCurrentDesignData",
     txdaCurrentDesignData = "txdaCurrentDesignData",
     txdaAddCurrentDesignData = "txdaAddCurrentDesignData",
-    txdaAddCurrentStateData = "txdaAddCurrentStateData"
+    txdaAddCurrentStateData = "txdaAddCurrentStateData",
+    txdaSelectedDesignIds = "txdaSelectedDesignIds"
 }
 export interface Message<T> {
     messageType: MessageType;
@@ -67,6 +71,7 @@ export declare type DisconnectedHandler = VoidFunction;
 export declare type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void;
 export declare type UpdateCurrentDesign3dHandler = (currentDesign: DesignStructure, metaData: MetaData) => void;
 export declare type UpdateCurrentDesignDataHandler = (currentDesign: DesignData, metaData: MetaData) => void;
+export declare type UpdateSelectedDesignIdsHandler = (selectedDesignIds: SelectedDesignIds, metaData: MetaData) => void;
 export interface TXDAMessageHandlers {
     /** An event handler that can accept any message from an {@linkcode TXDAConnection._port}. This should not need to be used directly. */
     _message?: MessageHandler;
@@ -80,6 +85,8 @@ export interface TXDAMessageHandlers {
     onUpdateCurrentDesign3d?: UpdateCurrentDesign3dHandler;
     /** An event handler that is fired on request for data via {@linkcode TXDAConnection.requestCurrentDesignData} */
     onUpdateCurrentDesignData?: UpdateCurrentDesignDataHandler;
+    /** An event handler that is fired when selecting designs in Data Table in Torx Design-Analyze */
+    onUpdateSelectedDesignIds?: UpdateSelectedDesignIdsHandler;
 }
 export interface TXDAConnection {
     /** The underlying `MessagePort` used to send and receive messages for this connection. This should not need to be used directly. */
