@@ -45,17 +45,6 @@ var attachHandlers = (port, handlers) => {
       }
     });
   }
-  if (handlers.onUpdateSelectedDesignIds) {
-    port.addEventListener("message", (portEvent) => {
-      if (portEvent.data?.messageType === "txdaSelectedDesignIds") {
-        const {
-          metaData,
-          data: selectedDesignIds
-        } = portEvent.data;
-        handlers.onUpdateSelectedDesignIds?.(selectedDesignIds, metaData);
-      }
-    });
-  }
 };
 
 // src/index.ts
