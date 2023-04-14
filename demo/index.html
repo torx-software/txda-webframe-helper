@@ -34,6 +34,16 @@
       destination.innerHTML = svg
     }
 
+    const updateCurrentNumberOfSelectedDesigns = number => {
+      const number_span = document.getElementById('current-number-of-selected-designs')
+      number_span.innerHTML = number
+      
+      const number_title = number_span.parentElement
+      if (number_title.style.display === 'none') {
+        number_title.style.display = 'block'
+      }
+    }
+
     const log = (message, source) => {
       const messagesTextArea = document.getElementById('messages')
       const dateTime = moment(new Date()).format('yyyy-MM-DD HH:mm:ss,SS')
@@ -89,6 +99,7 @@
           onUpdateSelectedDesignIds: (selectedDesignIds, metaData) => {
             portLog('Selected designs has changed')
             portLog(`${selectedDesignIds.designIds.length} designs selected`)
+            updateCurrentNumberOfSelectedDesigns(selectedDesignIds.designIds.length)
           }
         }
 
@@ -165,6 +176,8 @@
 
   <h3>Current design</h3>
   <div id="current-design"></div>
+
+  <h3 style="display: none;">Current number of selected designs: <span id="current-number-of-selected-designs"></span></h3>  
 
 </body>
 
