@@ -48,8 +48,7 @@ export interface DesignData {
 }
 
 /** An array of unique UUIDv4 identifier for the selected designs. */
-export interface SelectedDesignIds extends Array<string> {
-}
+export type SelectedDesignIds = Array<string>
 
 export enum MessageType {
   txdaConnectionRequest = 'txdaConnectionRequest',
