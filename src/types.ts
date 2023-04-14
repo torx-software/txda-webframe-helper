@@ -47,6 +47,9 @@ export interface DesignData {
   structureKeyValueData: KeyValueData
 }
 
+/** An array of unique UUIDv4 identifier for the selected designs. */
+export type SelectedDesignIds = Array<string>
+
 export enum MessageType {
   txdaConnectionRequest = 'txdaConnectionRequest',
   txdaMessagePortTransfer = 'txdaMessagePortTransfer',
@@ -61,7 +64,9 @@ export enum MessageType {
   txdaRequestCurrentDesignData = 'txdaRequestCurrentDesignData',
   txdaCurrentDesignData = 'txdaCurrentDesignData',
   txdaAddCurrentDesignData = 'txdaAddCurrentDesignData',
-  txdaAddCurrentStateData = 'txdaAddCurrentStateData'
+  txdaAddCurrentStateData = 'txdaAddCurrentStateData',
+
+  txdaSelectedDesignIds = 'txdaSelectedDesignIds'
 }
 
 export interface Message<T> {
@@ -82,6 +87,7 @@ export type DisconnectedHandler = VoidFunction
 export type UpdateCurrentDesignHandler = (currentDesign: Design, metaData: MetaData) => void
 export type UpdateCurrentDesign3dHandler = (currentDesign: DesignStructure, metaData: MetaData) => void
 export type UpdateCurrentDesignDataHandler = (currentDesign: DesignData, metaData: MetaData) => void
+export type UpdateSelectedDesignIdsHandler = (selectedDesignIds: SelectedDesignIds, metaData: MetaData) => void
 
 export interface TXDAMessageHandlers {
   /** An event handler that can accept any message from an {@linkcode TXDAConnection._port}. This should not need to be used directly. */
@@ -96,6 +102,8 @@ export interface TXDAMessageHandlers {
   onUpdateCurrentDesign3d?: UpdateCurrentDesign3dHandler
   /** An event handler that is fired on request for data via {@linkcode TXDAConnection.requestCurrentDesignData} */
   onUpdateCurrentDesignData?: UpdateCurrentDesignDataHandler
+  /** An event handler that is fired when selecting designs in Data Table in Torx Design-Analyze */
+  onUpdateSelectedDesignIds?: UpdateSelectedDesignIdsHandler
 }
 
 export interface TXDAConnection {

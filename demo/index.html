@@ -26,13 +26,22 @@
     integrity="sha384-3BB0D1tL1GoB/YEE4fN952Uk0W4B8hbPKUndsgDE3mj0g2ddM7k0vx+ZwdTCARb+"></script>
 
   <script src="https://cdn.jsdelivr.net/gh/torx-software/txda-webframe-helper@0246699/dist/txda-webframe-helper.min.js" integrity="sha384-Lm7cXXN8qC7E77e1aYvw9T15+cqTQxsOj5P/VEYVIBRqgaeVt6Ylhv5vij4crTnw" crossorigin="anonymous"></script>
-
   <script>
     const updateSmilesSvg = smiles => {
       const mol = window.rdkit.get_mol(smiles)
       const svg = mol.get_svg()
       const destination = document.getElementById('current-design')
       destination.innerHTML = svg
+    }
+
+    const updateCurrentNumberOfSelectedDesigns = number => {
+      const number_span = document.getElementById('current-number-of-selected-designs')
+      number_span.innerHTML = number
+      
+      const number_title = number_span.parentElement
+      if (number_title.style.display === 'none') {
+        number_title.style.display = 'block'
+      }
     }
 
     const log = (message, source) => {
@@ -86,6 +95,11 @@
             portLog('Current design data updated')
             portLog(JSON.stringify(currentDesign), space = 2)
             portLog(JSON.stringify(metaData), space = 2)
+          },
+          onUpdateSelectedDesignIds: (selectedDesignIds, metaData) => {
+            portLog('Selected designs has changed')
+            portLog(`${selectedDesignIds.designIds.length} designs selected`)
+            updateCurrentNumberOfSelectedDesigns(selectedDesignIds.designIds.length)
           }
         }
 
@@ -162,6 +176,8 @@
 
   <h3>Current design</h3>
   <div id="current-design"></div>
+
+  <h3 style="display: none;">Current number of selected designs: <span id="current-number-of-selected-designs"></span></h3>  
 
 </body>
 
